@@ -58,6 +58,18 @@ parameters:
     description: A secret string used to configure the Generic webhook.
     generate: expression
     from: "[a-zA-Z0-9]{40}"
+  - name: TLS_CERTIFICATE
+    displayName: TLS Certificate
+    description: Certificate for TLS encryption (PEM Format)
+  - name: TLS_KEY
+    displayName: TLS Key
+    description: Private Key for TLS encryption (PEM Format)
+  - name: TLS_CA_CERTIFICATE
+    displayName: TLS CA Certificate
+    description: Certificate Authority Certificate for TLS encryption (PEM Format)
+  - name: TLS_DEST_CA_CERTIFICATE
+    displayName: TLS Destination CA Certificate
+    description: Destination Certificate Authority Certificate for TLS encryption (PEM Format)
 
 objects:
   - kind: Service
@@ -84,6 +96,12 @@ objects:
       to:
         kind: Service
         name: "${NAME}"
+      tls:
+        termination: edge
+        key: ${TLS_KEY}
+        certificate: ${TLS_CERTIFICATE}
+        caCertificate: ${TLS_CA_CERTIFICATE}
+        destinationCACertificate: ${TLS_DEST_CA_CERTIFICATE}
   - kind: ImageStream
     apiVersion: v1
     metadata:
